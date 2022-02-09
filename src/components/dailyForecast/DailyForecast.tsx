@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TodayWeather from "./TodayWeather";
 import WeeklyWeather from "./WeeklyWeather";
+import { useAppSelector } from "../../hooks/redux";
+import { SLICE_WEATHER_NAME } from "../../store/reducers";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -40,6 +42,10 @@ function a11yProps(index: number) {
 }
 
 const DailyForecast = () => {
+  const { searchedCityName } = useAppSelector(
+    (store) => store[SLICE_WEATHER_NAME]
+  );
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -48,7 +54,7 @@ const DailyForecast = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box>{"CITY NAME"}</Box>
+      <Box>{searchedCityName}</Box>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}

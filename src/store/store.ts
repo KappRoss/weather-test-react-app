@@ -1,13 +1,17 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import weatherSlice from "./reducers/WeatherSlice";
+import { weatherAPI } from "../services/WeatherService";
+import { weatherReducer, SLICE_WEATHER_NAME } from "./reducers";
 
 const rootReducer = combineReducers({
-  weatherSlice,
+  [SLICE_WEATHER_NAME]: weatherReducer,
+  [weatherAPI.reducerPath]: weatherAPI.reducer,
 });
 
 export const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(weatherAPI.middleware),
   });
 };
 

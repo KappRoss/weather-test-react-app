@@ -1,5 +1,4 @@
 import React from "react";
-// @ts-ignore
 import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
 
@@ -56,6 +55,7 @@ const GraphForecast = () => {
         <ReactApexChart
           type="line"
           series={CHART_DATA}
+          // @ts-ignore
           options={chartOptions}
           height={300}
         />

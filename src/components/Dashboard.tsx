@@ -6,7 +6,6 @@ import GraphForecast from "./GraphForecast";
 import { Switch, Theme } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { createStyles, makeStyles } from "@mui/styles";
-import { useAppSelector } from "../hooks/redux";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Dashboard = () => {
   const classes = useStyles();
-  const { temperatureScale } = useAppSelector((store) => store.weatherSlice);
+
   const [checked, setChecked] = React.useState(true);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,10 +50,10 @@ const Dashboard = () => {
   return (
     <Grid container className={classes.root}>
       <Grid container className={classes.header}>
-        <Grid xs={10}>
+        <Grid item xs={10} display="flex">
           <SearchBar />
         </Grid>
-        <Grid xs={2}>
+        <Grid item xs={2}>
           <Switch
             checked={checked}
             onChange={handleChange}
@@ -62,13 +61,13 @@ const Dashboard = () => {
           />
         </Grid>
       </Grid>
-      <Grid xs={12} className={classes.favoriteList}>
+      <Grid item xs={12} className={classes.favoriteList}>
         <CitiesList />
       </Grid>
-      <Grid xs={12} className={classes.dailyForecast}>
+      <Grid item xs={12} className={classes.dailyForecast}>
         <DailyForecast />
       </Grid>
-      <Grid xs={12} className={classes.graphForecast}>
+      <Grid item xs={12} className={classes.graphForecast}>
         <GraphForecast />
       </Grid>
     </Grid>

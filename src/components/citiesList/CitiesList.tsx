@@ -3,12 +3,13 @@ import CityCard from "./CityCard";
 import { createStyles, makeStyles } from "@mui/styles";
 import { Theme } from "@mui/material";
 import Box from "@mui/material/Box";
-import AddIcon from "@mui/icons-material/Add";
+import { useAppSelector } from "../../hooks/redux";
+import { SLICE_WEATHER_NAME } from "../../store/reducers";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: theme.palette.primary.light,
     },
     headerBlock: {
       display: "flex",
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     weatherListBlock: {
       display: "flex",
+      height: 290,
     },
     cardsBlock: {
       display: "flex",
@@ -39,20 +41,32 @@ const useStyles = makeStyles((theme: Theme) =>
 const CitiesList = () => {
   const classes = useStyles();
 
+  const { searchedCityName, favoriteCities, favoriteCitiesList } =
+    useAppSelector((store) => store[SLICE_WEATHER_NAME]);
+
   return (
     <Box className={classes.container}>
       <Box className={classes.headerBlock}>
-        <Box>Weather Forecast</Box>
-        <Box>Edit</Box>
+        <Box>Favorites Forecast</Box>
       </Box>
       <Box className={classes.weatherListBlock}>
         <Box className={classes.cardsBlock}>
-          <CityCard />
-          <CityCard />
-          <CityCard />
-        </Box>
-        <Box className={classes.addCardBlock}>
-          <AddIcon color="primary" sx={{ fontSize: 80 }} />
+          {searchedCityName &&
+          !favoriteCitiesList.includes(searchedCityName) ? (
+            <CityCard cityName={searchedCityName} />
+          ) : (
+            ""
+          )}
+          {favoriteCities.map((city) =>
+            Object.keys(city).map((key) => (
+              <CityCard
+                key={key}
+                cityName={key}
+                lng={city[key].lng}
+                lat={city[key].lat}
+              />
+            ))
+          )}
         </Box>
       </Box>
     </Box>
