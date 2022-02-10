@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PositionDataType } from "../../models/IWeather";
+import { IPositionData, TempScale } from "../../models/IWeather";
 
 export const SLICE_WEATHER_NAME = "weather";
 
 interface WeatherState {
-  favoriteCities: { [x: string]: PositionDataType }[] | [];
+  favoriteCities: { [x: string]: IPositionData }[] | [];
   favoriteCitiesList: string[];
   location: string | null;
-  temperatureScale: "°C" | "°F";
-  userCoords: PositionDataType;
-  searchСoords: PositionDataType;
+  temperatureScale: TempScale.CELSIUS | TempScale.FAHRENHEIT;
+  userCoords: IPositionData | null;
+  searchСoords: IPositionData | null;
   searchedCityName: string;
 }
 
@@ -17,9 +17,9 @@ const initialState: WeatherState = {
   favoriteCities: [],
   favoriteCitiesList: [],
   location: null,
-  temperatureScale: "°C",
-  userCoords: { lat: null, lng: null },
-  searchСoords: { lat: null, lng: null },
+  temperatureScale: TempScale.CELSIUS,
+  userCoords: null,
+  searchСoords: null,
   searchedCityName: "",
 };
 
@@ -27,10 +27,10 @@ export const weatherSlice = createSlice({
   name: "weather",
   initialState,
   reducers: {
-    setUserCoords: (state, action: PayloadAction<PositionDataType>) => {
+    setUserCoords: (state, action: PayloadAction<IPositionData>) => {
       state.userCoords = action.payload;
     },
-    setSearchСoords: (state, action: PayloadAction<PositionDataType>) => {
+    setSearchСoords: (state, action: PayloadAction<IPositionData>) => {
       state.searchСoords = action.payload;
     },
     setSearchedCity: (state, action: PayloadAction<string>) => {
@@ -38,7 +38,7 @@ export const weatherSlice = createSlice({
     },
     editFavoriteList: (
       state,
-      action: PayloadAction<{ [x: string]: PositionDataType }>
+      action: PayloadAction<{ [x: string]: IPositionData }>
     ) => {
       state.favoriteCities = [action.payload, ...state.favoriteCities];
       state.favoriteCitiesList = [
@@ -56,6 +56,11 @@ export const weatherSlice = createSlice({
       state.favoriteCities = [...filteredCities];
       state.favoriteCitiesList = [...filteredCitiesList];
     },
+    setTemperatureScale: (state, action: PayloadAction<boolean>) => {
+      state.temperatureScale = action.payload
+        ? TempScale.CELSIUS
+        : TempScale.FAHRENHEIT;
+    },
   },
 });
 
@@ -66,4 +71,5 @@ export const {
   setSearchedCity,
   editFavoriteList,
   removeFavoriteCity,
+  setTemperatureScale,
 } = weatherSlice.actions;

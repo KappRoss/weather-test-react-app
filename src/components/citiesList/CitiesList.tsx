@@ -5,6 +5,7 @@ import { Theme } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useAppSelector } from "../../hooks/redux";
 import { SLICE_WEATHER_NAME } from "../../store/reducers";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,7 +48,7 @@ const CitiesList = () => {
   return (
     <Box className={classes.container}>
       <Box className={classes.headerBlock}>
-        <Box>Favorites Forecast</Box>
+        <Typography variant={"h6"}>Favorites Forecast</Typography>
       </Box>
       <Box className={classes.weatherListBlock}>
         <Box className={classes.cardsBlock}>

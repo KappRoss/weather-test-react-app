@@ -1,64 +1,75 @@
 import React from "react";
-import { merge } from "lodash";
 import ReactApexChart from "react-apexcharts";
-
-import { Card, CardHeader, Box } from "@mui/material";
-import { BaseOptionChart } from "./charts";
-
-const CHART_DATA = [
-  {
-    name: "Team A",
-    type: "column",
-    data: [-10, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-  },
-  {
-    name: "Team B",
-    type: "area",
-    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-  },
-  {
-    name: "Team C",
-    type: "line",
-    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-  },
-];
+import { Card, Box } from "@mui/material";
+import { useAppSelector } from "../hooks/redux";
+import { SLICE_WEATHER_NAME } from "../store/reducers";
+import { weatherAPI } from "../services/WeatherService";
+import { convertTempScale } from "../utils/convertTempScale";
 
 const GraphForecast = () => {
-  const chartOptions = merge(BaseOptionChart(), {
-    stroke: { width: [0, 2, 3] },
-    plotOptions: { bar: { columnWidth: "11%", borderRadius: 4 } },
-    fill: { type: ["solid", "gradient", "solid"] },
-    labels: [
-      "01/01/2003",
-      "02/01/2003",
-      "03/01/2003",
-      "04/01/2003",
-      "05/01/2003",
-      "06/01/2003",
-      "07/01/2003",
-      "08/01/2003",
-      "09/01/2003",
-      "10/01/2003",
-      "11/01/2003",
-    ],
-    xaxis: { type: "datetime" },
-    tooltip: {
-      shared: true,
-      intersect: false,
+  const { searchСoords, temperatureScale } = useAppSelector(
+    (store) => store[SLICE_WEATHER_NAME]
+  );
+  const { data } = weatherAPI.useFetchDailyForecastQuery(
+    {
+      lat: searchСoords?.lat,
+      lng: searchСoords?.lng,
+      cnt: 10,
     },
-  });
+    { skip: !searchСoords }
+  );
+
+  const temperature = data?.list.map((day) =>
+    Math.trunc(convertTempScale(day.temp.day, temperatureScale))
+  );
+  // const labels = data?.list.map(day => moment(day.dt).format("D ddd").toString())
+
+  const options = {
+    chart: {
+      id: "basic-bar",
+    },
+    dataLabels: {
+      enabled: true,
+    },
+    xaxis: {
+      categories: [
+        "01/02",
+        "02/02",
+        "03/02",
+        "04/02",
+        "05/02",
+        "06/02",
+        "07/02",
+        "08/02",
+        "09/02",
+        "10/02",
+      ],
+    },
+    yaxis: {
+      title: {
+        text: 'Temperature'
+      }
+    },
+  };
+
+  const series = [
+    {
+      name: "temp",
+      data: temperature || [],
+    },
+  ];
 
   return (
-    <Card>
-      <CardHeader title="Today" sx={{ p: 0 }} />
+    <Card sx={{minHeight: 300, pl: 1, ml: 1}}>
       <Box sx={{ pb: 1 }} dir="ltr">
-        <ReactApexChart
-          type="line"
-          series={CHART_DATA}
-          // @ts-ignore
-          options={chartOptions}
-          height={300}
-        />
+        {data && (
+          <ReactApexChart
+            type="line"
+            series={series}
+            options={options}
+            height={300}
+          />
+        )}
       </Box>
     </Card>
   );

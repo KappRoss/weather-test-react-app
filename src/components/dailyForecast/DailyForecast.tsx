@@ -3,7 +3,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import TodayWeather from "./TodayWeather";
 import WeeklyWeather from "./WeeklyWeather";
 import { useAppSelector } from "../../hooks/redux";
 import { SLICE_WEATHER_NAME } from "../../store/reducers";
@@ -24,12 +23,9 @@ function TabPanel(props: TabPanelProps) {
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
+      style={{ minHeight: 210 }}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
     </div>
   );
 }
@@ -54,21 +50,17 @@ const DailyForecast = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box>{searchedCityName}</Box>
+      <Typography variant={"h6"}>{searchedCityName}</Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="daily forecast tabs"
         >
-          <Tab label="Today" {...a11yProps(0)} />
-          <Tab label="Weekly" {...a11yProps(1)} />
+          <Tab label="Weekly" {...a11yProps(0)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <TodayWeather />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
         <WeeklyWeather />
       </TabPanel>
     </Box>

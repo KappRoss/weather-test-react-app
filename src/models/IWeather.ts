@@ -35,7 +35,65 @@ export interface IWeather {
   cod: number;
 }
 
-export type PositionDataType = {
-  lat: number | null;
-  lng: number | null;
-};
+export interface IDailyWeather {
+  city: {
+    id: number;
+    name: string;
+    coord: {
+      lon: number;
+      lat: number;
+    };
+    country: string;
+    population: number;
+    timezone: number;
+  };
+  cod: string;
+  message: number;
+  cnt: number;
+  list: {
+    dt: number;
+    sunrise: number;
+    sunset: number;
+    temp: {
+      day: number;
+      min: number;
+      max: number;
+      night: number;
+      eve: number;
+      morn: number;
+    };
+    feels_like: {
+      day: number;
+      night: number;
+      eve: number;
+      morn: number;
+    };
+    pressure: number;
+    humidity: number;
+    weather: {
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    }[];
+    speed: number;
+    deg: number;
+    gust: number;
+    clouds: number;
+    pop: number;
+  }[];
+}
+
+export interface IPositionData {
+  lat: number | null | undefined;
+  lng: number | null | undefined;
+}
+
+export interface IDailyPositionData extends IPositionData {
+  cnt: number;
+}
+
+export enum TempScale {
+  FAHRENHEIT = "°F",
+  CELSIUS = "°C",
+}

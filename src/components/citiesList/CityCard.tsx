@@ -17,6 +17,7 @@ import {
   SLICE_WEATHER_NAME,
 } from "../../store/reducers";
 import { weatherAPI } from "../../services/WeatherService";
+import { convertTempScale } from "../../utils/convertTempScale";
 
 interface CityCardProps {
   cityName: string;
@@ -71,27 +72,28 @@ const CityCard: React.FC<CityCardProps> = ({ cityName, lng, lat }) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const { searchСoords, favoriteCitiesList } = useAppSelector(
+  const { searchСoords, favoriteCitiesList, temperatureScale } = useAppSelector(
     (store) => store[SLICE_WEATHER_NAME]
   );
 
-  const { data } = weatherAPI.useFetchWeatherDataQuery({
-    lng: lng || searchСoords.lng,
-    lat: lat || searchСoords.lat,
-  });
+  const { data } = weatherAPI.useFetchWeatherDataQuery(
+    {
+      lng: lng || searchСoords?.lng,
+      lat: lat || searchСoords?.lat,
+    },
+    { skip: !searchСoords }
+  );
 
   const addToFavoriteList = () => {
     if (!favoriteCitiesList.includes(cityName)) {
       dispatch(
         editFavoriteList({
           [cityName]: {
-            lat: searchСoords.lat,
-            lng: searchСoords.lng,
+            lat: searchСoords?.lat,
+            lng: searchСoords?.lng,
           },
         })
       );
-    } else {
-      console.log("already exist");
     }
   };
 
@@ -113,7 +115,10 @@ const CityCard: React.FC<CityCardProps> = ({ cityName, lng, lat }) => {
               />
             }
             title={cityName}
-            subheader={data.main.temp}
+            subheader={`${convertTempScale(
+              data.main.temp,
+              temperatureScale
+            )}${temperatureScale}`}
           />
           <CardContent className={classes.cardContent}>
             <Grid container>

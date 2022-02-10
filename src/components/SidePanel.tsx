@@ -11,13 +11,13 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       height: "100%",
       flexDirection: "column",
-      justifyContent: "space-between",
     },
     title: {
       textAlign: "center",
       width: "100%",
       fontWeight: "bold",
       fontSize: 24,
+      padding: theme.spacing(1, 0, 7.5, 0),
     },
   })
 );

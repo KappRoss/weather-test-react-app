@@ -5,4 +5,5 @@ export {
   setSearchedCity,
   editFavoriteList,
   removeFavoriteCity,
+  setTemperatureScale,
 } from "./WeatherSlice";
