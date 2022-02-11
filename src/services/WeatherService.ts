@@ -8,7 +8,9 @@ import {
 
 export const weatherAPI = createApi({
   reducerPath: "weatherAPI",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://community-open-weather-map.p.rapidapi.com/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://community-open-weather-map.p.rapidapi.com/",
+  }),
   endpoints: (build) => ({
     fetchWeatherData: build.query<IWeather, IPositionData>({
       query: ({ ...arg }) => ({
@@ -19,8 +21,7 @@ export const weatherAPI = createApi({
         },
         headers: {
           "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-          "x-rapidapi-key":
-            process.env.REACT_APP_RAPIDAPI_WEATHER_API_KEY,
+          "x-rapidapi-key": process.env.REACT_APP_RAPIDAPI_WEATHER_API_KEY,
         },
       }),
     }),

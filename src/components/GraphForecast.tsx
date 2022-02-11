@@ -47,8 +47,8 @@ const GraphForecast = () => {
     },
     yaxis: {
       title: {
-        text: 'Temperature'
-      }
+        text: "Temperature",
+      },
     },
   };
 
@@ -60,7 +60,7 @@ const GraphForecast = () => {
   ];
 
   return (
-    <Card sx={{minHeight: 300, pl: 1, ml: 1}}>
+    <Card sx={{ minHeight: 300, pl: 1, ml: 1 }}>
       <Box sx={{ pb: 1 }} dir="ltr">
         {data && (
           <ReactApexChart

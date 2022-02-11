@@ -1,17 +1,29 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { weatherAPI } from "../services/WeatherService";
 import { weatherReducer, SLICE_WEATHER_NAME } from "./reducers";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
   [SLICE_WEATHER_NAME]: weatherReducer,
   [weatherAPI.reducerPath]: weatherAPI.reducer,
 });
 
+const persistConfig = {
+  key: "root",
+  storage,
+  blacklist: [weatherAPI.reducerPath],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const setupStore = () => {
   return configureStore({
-    reducer: rootReducer,
+    reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(weatherAPI.middleware),
+      getDefaultMiddleware({ serializableCheck: false }).concat(
+        weatherAPI.middleware
+      ),
   });
 };
 

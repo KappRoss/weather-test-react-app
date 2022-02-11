@@ -75,6 +75,7 @@ const SearchBar = () => {
           <SearchIcon />
         </div>
         <InputBase
+          id="search-city"
           placeholder="Search…"
           classes={{ root: classes.inputRoot }}
         />
